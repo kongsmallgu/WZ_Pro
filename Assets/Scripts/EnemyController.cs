@@ -71,7 +71,17 @@ public class EnemyController : MonoBehaviour
     //敌人死后掉落物品
     private string EnemyName;
     private GameObject enemydropObj;
+    private GameObject atkenemydropObj;
+    private GameObject lifeenemydropObj;
+
     private float dropchance;
+    private float atkdropchance;
+    private float lifedropchance;
+
+    //掉落特效
+    private GameObject enemydropEft;
+    private GameObject atkenemydropEft;
+    private GameObject lifeenemydropEft;
 
     //敌人技能释放
     private EnemySkillManager skillManager;
@@ -102,8 +112,18 @@ public class EnemyController : MonoBehaviour
 
         patrolSpeed = enemyStats.PatrolSpeed; //巡逻速度
         patrolSpeed = enemyStats.TrackSpeed; //追踪速度
+        //掉落物品
         enemydropObj = enemyStats.DropObj; // 玩家死后 掉落物品
+        atkenemydropObj = enemyStats.AtkDropObj; // 玩家死后 掉落物品
+        lifeenemydropObj = enemyStats.LifeDropObj; // 玩家死后 掉落物品
+
         dropchance = enemyStats.dropChance; //掉落概率
+        atkdropchance = enemyStats.AtkdropChance; //攻击道具掉落概率
+        lifedropchance = enemyStats.LifedropChance; //生命道具掉落概率
+        //特效
+        enemydropEft = enemyStats.DropObjEft;
+        atkenemydropEft = enemyStats.AtkDropObjEft;
+        lifeenemydropEft = enemyStats.LifeDropObjEft;
 
         //增加属性
         addPlayerhp = enemyStats.AddPlayerHealth;
@@ -431,25 +451,7 @@ public class EnemyController : MonoBehaviour
         Destroy(newEnemyHealthUI);
         Debug.Log("我作为一个敌人 已经死啦 不要打啦");
         
-        string enemydropObjName = enemydropObj.name;
-        // 随机决定是否掉落道具
-        if (Random.value < dropchance)
-        {
-            //加载预制体
-            GameObject itemPrefab = Resources.Load<GameObject>("DropIteam/"+ enemydropObjName);
-            
-            // 生成道具对象
-            Instantiate(itemPrefab, transform.position, Quaternion.identity);
-
-            GameObject pickupEffectPrefab = Resources.Load<GameObject>("DropIteamEffect/" + enemydropObjName);
-            // 播放死亡特效
-            if (pickupEffectPrefab != null)
-            {
-                GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
-                Destroy(effect, 2f); // 特效播放结束后销毁
-            }
-
-        }
+        DropDownItem(dropchance, atkdropchance,lifedropchance);
         Destroy(gameObject);
     }
 
@@ -460,66 +462,70 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, patrolRadius);
     }
 
-    public void DropDownItem(float dropChance, float AtkdropChance, string enemyDropObjName) 
+    //掉落道具
+    public void DropDownItem(float dropChance, float AtkdropChance, float LifeDropChance) 
     {
         float dropValue = Random.value;
+        float atkDropChance = dropChance + AtkdropChance;
+        float survivalDropChance = atkDropChance + LifeDropChance;
+        Debug.Log("道具随机掉落概率为================" + dropValue);
         // 随机决定是否掉落道具
-        if (dropValue < 1)
+        // 一般道具
+        if (dropValue < dropChance)
         {
-            // 一般道具
-            if (dropValue < dropChance)
+            Debug.Log("掉落一般道具");
+            string enemydropObjName = enemydropObj.name;
+            //加载预制体
+            GameObject itemPrefab = Resources.Load<GameObject>("ItemGoods/DropIteam/" + enemydropObjName);
+
+            // 生成道具对象
+            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+
+            string enemydropEftName = enemydropEft.name;
+            GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/DropIteamEffect/" + enemydropEftName);
+            // 播放死亡特效
+            if (pickupEffectPrefab != null)
             {
-                //加载预制体
-                GameObject itemPrefab = Resources.Load<GameObject>("ItemGoods/DropItem/" + enemyDropObjName);
-
-                // 生成道具对象
-                Instantiate(itemPrefab, transform.position, Quaternion.identity);
-
-                GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/DropItemEffect/" + enemyDropObjName);
-                // 播放死亡特效
-                if (pickupEffectPrefab != null)
-                {
-                    GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
-                    Destroy(effect, 2f); // 特效播放结束后销毁
-                }
-            }
-            // 特殊攻击道具
-            else if (dropValue < AtkdropChance)
-            {
-                //加载预制体
-                GameObject specialAttackPrefab = Resources.Load<GameObject>("ItemGoods/SpecialAttackItem/" + enemyDropObjName);
-
-                // 生成特殊攻击道具对象
-                Instantiate(specialAttackPrefab, transform.position, Quaternion.identity);
-
-                GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/SpecialAttackItemEffect/" + enemyDropObjName);
-                // 播放死亡特效
-                if (pickupEffectPrefab != null)
-                {
-                    GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
-                    Destroy(effect, 2f); // 特效播放结束后销毁
-                }
-            }
-            // 特殊生存道具
-            else
-            {
-                //加载预制体
-                GameObject survivalItemPrefab = Resources.Load<GameObject>("ItemGoods/SurvivalItem/" + enemyDropObjName);
-
-                // 生成特殊生存道具对象
-                Instantiate(survivalItemPrefab, transform.position, Quaternion.identity);
-
-                GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/SurvivalItemEffect/" + enemyDropObjName);
-                // 播放死亡特效
-                if (pickupEffectPrefab != null)
-                {
-                    GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
-                    Destroy(effect, 2f); // 特效播放结束后销毁
-                }
+                GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(effect, 2f); // 特效播放结束后销毁
             }
         }
+        // 特殊攻击道具
+        else if (dropValue < atkDropChance)
+        {
+            Debug.Log("掉落特殊攻击道具");
+            //加载预制体
+            GameObject specialAttackPrefab = Resources.Load<GameObject>("ItemGoods/SpecialAttackItem/" + atkenemydropObj.name);
 
+            // 生成特殊攻击道具对象
+            Instantiate(specialAttackPrefab, transform.position, Quaternion.identity);
 
+            GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/SpecialAttackItemEffect/" + atkenemydropEft.name);
+            // 播放死亡特效
+            if (pickupEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(effect, 2f); // 特效播放结束后销毁
+            }
+        }
+        // 特殊生存道具
+        else
+        {
+            Debug.Log("掉落特殊生存道具");
+            //加载预制体
+            GameObject survivalItemPrefab = Resources.Load<GameObject>("ItemGoods/SurvivalItem/" + lifeenemydropObj.name);
+
+            // 生成特殊生存道具对象
+            Instantiate(survivalItemPrefab, transform.position, Quaternion.identity);
+
+            GameObject pickupEffectPrefab = Resources.Load<GameObject>("ItemGoods/SurvivalItemEffect/" + lifeenemydropEft.name);
+            // 播放死亡特效
+            if (pickupEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(effect, 2f); // 特效播放结束后销毁
+            }
+        }
 
     }
 }
