@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C67BEFF4-5684-C2D8-7081-1D58FF159341}</ProjectGuid>
+    <ProjectGuid>{0FC2F299-9689-65DF-6146-FB7B68FB0742}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>VirtualButtonsScripts</AssemblyName>
