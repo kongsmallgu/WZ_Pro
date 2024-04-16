@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66669c062aa55344db697442102a133f, type: 3}
+  m_Name: EnemyOne
+  m_EditorClassIdentifier: 
+  EnemyName: "\u654C\u4EBA\u4E00"
+  EnemyHealth: 100
+  EnemyAttack: 20
+  EnemyDefense: 0
+  PatrolRange: 15
+  MeleeRange: 3
+  RangedRange: 10
+  MeleeAttackRate: 2
+  RangedAttackRate: 2
+  PatrolSpeed: 3
+  TrackSpeed: 3
+  knockbackForce: 1
+  AddPlayerHealth: 200
+  AddPlayerAttack: 20
+  AddPlayerDefense: 10
+  DropObj: {fileID: 4966471885759698497, guid: 975cd35876339594788e2b5d6d275726, type: 3}
+  dropChance: 1
+  AtkdropChance: 0
