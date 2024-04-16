@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1211996622978642051}
   - component: {fileID: 6651625467888552483}
   - component: {fileID: 8570245609409848446}
+  - component: {fileID: 4503985151182018454}
   m_Layer: 0
   m_Name: potion_cone_modle
-  m_TagString: Untagged
+  m_TagString: lotion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156768386904450424}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,7 +36,6 @@ Transform:
   - {fileID: 6275725403420841222}
   - {fileID: 7261250895958133004}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6651625467888552483
 MeshFilter:
@@ -86,6 +87,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4503985151182018454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156768386904450424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a6229aa4a355647b3f9c7c9103367c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  potionitem: {fileID: 0}
 --- !u!1 &7061455299580951204
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,13 +125,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7061455299580951204}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00000030517577, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1211996622978642051}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4247878414048502865
 MeshFilter:
@@ -174,6 +188,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1211996622978642051}
     m_Modifications:
     - target: {fileID: 785776527669262592, guid: e7cf082559d60ff40aca521a7899232e, type: 3}
@@ -241,6 +256,9 @@ PrefabInstance:
       value: rope_single
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cf082559d60ff40aca521a7899232e, type: 3}
 --- !u!4 &7261250895958133004 stripped
 Transform:
@@ -252,6 +270,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1211996622978642051}
     m_Modifications:
     - target: {fileID: 1498820189745766036, guid: 34cb92952c5a194479f03cebe20d9d74, type: 3}
@@ -315,6 +334,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34cb92952c5a194479f03cebe20d9d74, type: 3}
 --- !u!4 &6275725403420841222 stripped
 Transform:

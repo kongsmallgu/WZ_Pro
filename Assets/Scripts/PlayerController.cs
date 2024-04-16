@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     private int currentHealth;
     public HealthBar healthBar;
 
-    public Item potion;
+    //public Item potion;
+    private Item potion;
     public PlayerStats playerstats;
     public ScrollViewController scrollViewController;
 
@@ -164,8 +165,11 @@ public class PlayerController : MonoBehaviour
         // 检查进入触发器的物体是否有标签为"lotion"
         if (other.gameObject.CompareTag("lotion"))
         {
-            ParameterManage.Instance.option = potion;
-            ParameterManage.Instance.PacageNum++;
+            //获取物品的PotionItemShow脚本
+            PotionItemShow potionItemShow = other.gameObject.GetComponent<PotionItemShow>();
+            potion = potionItemShow.potionitem;
+            /*  ParameterManage.Instance.option = potion;
+              ParameterManage.Instance.PacageNum++;*/
             // 播放音效
             MusicManager.instance.PlaySoundEffect(0);            
             Destroy(other.gameObject);

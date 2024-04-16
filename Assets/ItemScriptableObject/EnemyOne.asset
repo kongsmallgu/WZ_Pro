@@ -24,15 +24,16 @@ MonoBehaviour:
   PatrolSpeed: 3
   TrackSpeed: 3
   knockbackForce: 1
+  RangedAtkEft: {fileID: 0}
   AddPlayerHealth: 200
   AddPlayerAttack: 20
   AddPlayerDefense: 10
   dropChance: 1
-  DropObj: {fileID: 4966471885759698497, guid: 975cd35876339594788e2b5d6d275726, type: 3}
+  DropObj: {fileID: 4966471885759698497, guid: 59827d2c145a0734faed40e0f1c83b18, type: 3}
   DropObjEft: {fileID: 100004, guid: 417d95259df90e4488eb927fde45cba3, type: 3}
   AtkdropChance: 0
-  AtkDropObj: {fileID: 2105642623487264571, guid: bffdc37cce5a39e40ab6c484f00a7f5f, type: 3}
+  AtkDropObj: {fileID: 10430633021337957, guid: ced50725ea6cba442a982b712f429eb6, type: 3}
   AtkDropObjEft: {fileID: 100006, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
   LifedropChance: 0
-  LifeDropObj: {fileID: 3263136236011562727, guid: e86654a274edb414496a8978a24acc9e, type: 3}
+  LifeDropObj: {fileID: 2105642623487264571, guid: 14b8024d47e345c4c96a258fa3266bfd, type: 3}
   LifeDropObjEft: {fileID: 100000, guid: f881607407b15cc46b24d6bda799037a, type: 3}

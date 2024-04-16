@@ -33,7 +33,7 @@ public class ScrollViewController : MonoBehaviour, IBeginDragHandler, IEndDragHa
 
             Debug.Log("Õý³£ÒÆ¶¯===========");
         }*/
-        //SetScrollToRight();
+        SetScrollToRight();
        
         
     }

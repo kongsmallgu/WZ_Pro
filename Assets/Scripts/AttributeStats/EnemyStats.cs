@@ -34,6 +34,9 @@ public class EnemyStats : ScriptableObject
     [Tooltip("敌人的击退力大小")]
     public float knockbackForce;
 
+    [Tooltip("敌人的远程攻击特效")]
+    public GameObject RangedAtkEft;
+
 
     [Header("死亡属性")]
     [Tooltip("敌人死亡后增加给玩家的生命值")]

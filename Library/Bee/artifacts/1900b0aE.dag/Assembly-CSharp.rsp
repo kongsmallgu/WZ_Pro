@@ -393,6 +393,7 @@
 "Assets/Scripts/ParameterManage.cs"
 "Assets/Scripts/PlayerController.cs"
 "Assets/Scripts/Potion/PotionItem.cs"
+"Assets/Scripts/Potion/PotionItemShow.cs"
 "Assets/Scripts/RightAlignedScrollRect.cs"
 "Assets/Scripts/SaveDataFile/UserJson.cs"
 "Assets/Scripts/SaveDataFile/UserManager.cs"

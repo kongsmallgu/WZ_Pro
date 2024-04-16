@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 7087827829254964764}
   - component: {fileID: 9211652494763616341}
   - component: {fileID: 4043479632174809642}
+  - component: {fileID: -1963890890811213144}
+  - component: {fileID: -3689975486198182999}
   m_Layer: 0
   m_Name: potion_hexagon_modle
-  m_TagString: Untagged
+  m_TagString: lotion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,6 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10430633021337957}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,7 +37,6 @@ Transform:
   - {fileID: 5869384935649908983}
   - {fileID: 7261250895141465886}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9211652494763616341
 MeshFilter:
@@ -86,6 +88,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-1963890890811213144
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10430633021337957}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.42700174, y: 0.7, z: 0.4866912}
+  m_Center: {x: 0, y: 0.099999994, z: 0}
+--- !u!114 &-3689975486198182999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10430633021337957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a6229aa4a355647b3f9c7c9103367c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  potionitem: {fileID: 11400000, guid: dc169625d74815740b61e7ced7772323, type: 2}
 --- !u!1 &4951992185902216457
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,13 +147,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4951992185902216457}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7087827829254964764}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2043018452636529041
 MeshFilter:
@@ -174,6 +210,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7087827829254964764}
     m_Modifications:
     - target: {fileID: 785776527669262592, guid: e7cf082559d60ff40aca521a7899232e, type: 3}
@@ -241,6 +278,9 @@ PrefabInstance:
       value: rope_single
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cf082559d60ff40aca521a7899232e, type: 3}
 --- !u!4 &7261250895141465886 stripped
 Transform:
@@ -252,6 +292,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7087827829254964764}
     m_Modifications:
     - target: {fileID: 627712320004671022, guid: 97fcf54ab3942a4479ee69ecd8731469, type: 3}
@@ -315,6 +356,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97fcf54ab3942a4479ee69ecd8731469, type: 3}
 --- !u!4 &5869384935649908983 stripped
 Transform:
