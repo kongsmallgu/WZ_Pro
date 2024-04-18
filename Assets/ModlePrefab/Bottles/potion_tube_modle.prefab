@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 892438272139481340}
   - component: {fileID: 7786052841339621287}
   - component: {fileID: -8923876073760662231}
+  - component: {fileID: 6138463743520518116}
   m_Layer: 0
   m_Name: potion_tube_modle
   m_TagString: lotion
@@ -183,6 +184,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potionitem: {fileID: 0}
+--- !u!65 &6138463743520518116
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958860787811349573}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23040003, y: 0.69560456, z: 0.23040003}
+  m_Center: {x: 0.0000000037252903, y: -0.0037079602, z: 0.000000018626451}
 --- !u!1001 &312312313
 PrefabInstance:
   m_ObjectHideFlags: 0

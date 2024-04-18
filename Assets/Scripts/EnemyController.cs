@@ -295,19 +295,25 @@ public class EnemyController : MonoBehaviour
     }
     private void meleeAttackState()
     {
-        // 攻击逻辑
-        Debug.Log("敌人正在进行 ===================== 近 ================== 站攻击");
-        ParameterManage.Instance.currentEnemyPosition = transform.position;
-
-        // 如果攻击时间已经到达，则进行攻击
-        if (Time.time >= nextAttackTime && !EnemyIsDie)
+        if (!ParameterManage.Instance.IsDie)
         {
-            isAttacking = true;
-            MeleeAttack(player);
-            nextAttackTime = Time.time + 1f / meleeRate; // 更新下次攻击时间
-            StartCoroutine(ResetAttackStatus()); // 重置攻击状态
-        }
+            // 攻击逻辑
+            Debug.Log("敌人正在进行 ===================== 近 ================== 站攻击");
+            ParameterManage.Instance.currentEnemyPosition = transform.position;
 
+            // 如果攻击时间已经到达，则进行攻击
+            if (Time.time >= nextAttackTime && !EnemyIsDie)
+            {
+                isAttacking = true;
+                MeleeAttack(player);
+                nextAttackTime = Time.time + 1f / meleeRate; // 更新下次攻击时间
+                StartCoroutine(ResetAttackStatus()); // 重置攻击状态
+            }
+        }
+        else
+        {
+            currentState = EnemyState.Patrol;
+        }
     }
     // 重置攻击状态
     private IEnumerator ResetAttackStatus()
@@ -318,10 +324,11 @@ public class EnemyController : MonoBehaviour
     private void MeleeAttack(GameObject player)
     {
         fsm.SetState(EnemyStateType.NearAttacking);
-        PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;
+       /* PlayerattackDamage = playerHealth.attack;
+        PlayerattackDefense = playerHealth.defense;*/
        
         // 对玩家造成伤害 以及僵直和击退效果实现
+
         // 计算敌人与玩家的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
         //对玩家的伤害
@@ -361,26 +368,34 @@ public class EnemyController : MonoBehaviour
 
     private void rangeAttackState()
     {
-        // 攻击逻辑
-        Debug.Log("敌人正在进行 ============ 远 ====== 站攻击");
-        ParameterManage.Instance.currentEnemyPosition = transform.position;
-
-        // 如果攻击时间已经到达，则进行攻击
-        if (Time.time >= nextAttackTime && !EnemyIsDie)
+        if (!ParameterManage.Instance.IsDie)
         {
-            isAttacking = true;
-            RangeAttack(player);
-            nextAttackTime = Time.time + 1f / meleeRate; // 更新下次攻击时间
-            StartCoroutine(ResetAttackStatus()); // 重置攻击状态
+            // 攻击逻辑
+            Debug.Log("敌人正在进行 ============ 远 ====== 站攻击");
+            ParameterManage.Instance.currentEnemyPosition = transform.position;
+
+            // 如果攻击时间已经到达，则进行攻击
+            if (Time.time >= nextAttackTime && !EnemyIsDie)
+            {
+                isAttacking = true;
+                RangeAttack(player);
+                nextAttackTime = Time.time + 1f / meleeRate; // 更新下次攻击时间
+                StartCoroutine(ResetAttackStatus()); // 重置攻击状态
+            }
         }
+        else
+        {
+            currentState = EnemyState.Patrol;
+        }      
     }
 
     private void RangeAttack(GameObject player)
     {
         fsm.SetState(EnemyStateType.FarAttacking);
 
-        PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;
+    /*    PlayerattackDamage = playerHealth.attack;
+        PlayerattackDefense = playerHealth.defense;*/
+
         // 对玩家造成伤害 以及僵直和击退效果实现
         // 计算敌人与玩家的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;

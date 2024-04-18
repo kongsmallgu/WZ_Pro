@@ -14,7 +14,7 @@ public class TextFSM : MonoBehaviour
         //Ìí¼Ó×´Ì¬
         fsm.AddState(StateType.Idle,new IdleState(animator,this.fsm));
         fsm.AddState(StateType.Moving, new MovingState(animator));
-        fsm.AddState(StateType.Attacking, new AttackingState(animator));
+        //fsm.AddState(StateType.Attacking, new AttackingState(animator));
         //ÉèÖÃ×´Ì¬
         fsm.SetState(StateType.Attacking);
     }

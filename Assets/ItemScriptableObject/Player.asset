@@ -15,3 +15,5 @@ MonoBehaviour:
   Health: 200
   Attack: 20
   Defense: 10
+  MoveSpeed: 3
+  AttackTime: 1

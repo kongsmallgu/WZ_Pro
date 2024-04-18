@@ -216,8 +216,10 @@ public class Enemy : MonoBehaviour
         /*fsm.SetState(EnemyStateType.Attacking);*/
         // 检测玩家是否具有 PlayerController 组件
         PlayerController playerHealth = player.GetComponent<PlayerController>();
-        PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;
+
+        /*PlayerattackDamage = playerHealth.attack;
+        PlayerattackDefense = playerHealth.defense;*/
+
         if (playerHealth != null)
         {
             // 对玩家造成伤害 以及僵直和击退效果实现
@@ -247,8 +249,8 @@ public class Enemy : MonoBehaviour
         /*fsm.SetState(EnemyStateType.Attacking);*/
         // 检测玩家是否具有 PlayerController 组件
         PlayerController playerHealth = player.GetComponent<PlayerController>();
-        PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;
+       /* PlayerattackDamage = playerHealth.attack;
+        PlayerattackDefense = playerHealth.defense;*/
         if (playerHealth != null)
         {
             // 对玩家造成伤害

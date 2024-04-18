@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3247557763867031278}
   - component: {fileID: 8588637292586906525}
   - component: {fileID: -5349321421918641484}
+  - component: {fileID: 7101681001175271997}
   m_Layer: 0
   m_Name: potion_sharp_modle
   m_TagString: lotion
@@ -183,6 +184,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potionitem: {fileID: 0}
+--- !u!65 &7101681001175271997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831759023959867654}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.35999998, y: 0.725, z: 0.36}
+  m_Center: {x: 0, y: 0.11250003, z: 0.000000014901161}
 --- !u!1001 &1128038347
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class PlayerStats : ScriptableObject
     [Header("行为属性")]
     [Tooltip("玩家移动速度")]
     public float MoveSpeed;
-    [Tooltip("玩家攻击间隔")]
-    public float RangedAttackRate;
+    [Header("玩家攻击间隔 玩家每几秒攻击一次")]
+    public float AttackTime;
 
 }

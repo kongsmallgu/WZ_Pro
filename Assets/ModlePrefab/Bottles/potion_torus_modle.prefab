@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1272469382644082709}
   - component: {fileID: 8345325168166839986}
   - component: {fileID: -8198455694340544325}
+  - component: {fileID: -7039568496356360925}
   m_Layer: 0
   m_Name: potion_torus_modle
   m_TagString: lotion
@@ -100,6 +101,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potionitem: {fileID: 0}
+--- !u!65 &-7039568496356360925
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2751614811219460517}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.54, y: 0.67865396, z: 0.18750003}
+  m_Center: {x: 0.0000074505806, y: 0.06932695, z: -0.00016880408}
 --- !u!1 &3268698686628026716
 GameObject:
   m_ObjectHideFlags: 0

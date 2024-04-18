@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 854602199737994621}
   - component: {fileID: 5184360149349530243}
   - component: {fileID: 9178863209373571773}
+  - component: {fileID: 4299891528098861239}
   m_Layer: 0
   m_Name: potion_heart_modle
   m_TagString: lotion
@@ -99,6 +100,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potionitem: {fileID: 0}
+--- !u!65 &4299891528098861239
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105642623487264571}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.551302, y: 0.6145762, z: 0.31680006}
+  m_Center: {x: 0.00071814656, y: 0.037264317, z: 0.0000013634562}
 --- !u!1 &2892215168146065917
 GameObject:
   m_ObjectHideFlags: 0

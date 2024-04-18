@@ -11,13 +11,13 @@ public class Item : ScriptableObject
     public string itemDescription;
 
     [Header("功能属性")]
-    public int healthBonus;
-    public int attackBonus;
-    public int defenseBonus;
+    public float healthBonus;
+    public float attackBonus;
+    public float defenseBonus;
     public float moveSpeed;
     public float atkSpeed;
 
     [Header("特殊属性")]
     [Tooltip("持续时间")]
-    public int itemDuration;
+    public float itemDuration;
 }

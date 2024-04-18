@@ -11,9 +11,9 @@ public class PotionItemShow : MonoBehaviour
     private string itemdescription;
 
     // 物品功能属性
-    private int healthbonus;
-    private int attackbonus;
-    private int defensebonus;
+    private float healthbonus;
+    private float attackbonus;
+    private float defensebonus;
     private float movespeed;
     private float atkspeed;
 
