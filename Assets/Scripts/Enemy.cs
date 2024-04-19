@@ -303,7 +303,8 @@ public class Enemy : MonoBehaviour
         //血条预制体也消失
         Destroy(newEnemyHealthUI);
         //玩家属性增加
-        player.GetComponent<PlayerController>().UseEnemyItem(enemyStats);
+        //player.GetComponent<PlayerController>().UseEnemyItem(enemyStats);
+
     }
 
     //设置巡逻逻辑

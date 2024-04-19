@@ -24,8 +24,8 @@ public class EnemyController : MonoBehaviour
     private EnemyFSMControl fsm;
     private Animator animator;
     //血条
-    private int maxHealth;
-    private int currentHealth;
+    private float maxHealth;
+    private float currentHealth;
     private Text Enemyname;
     private Slider healthSlider;
 
@@ -37,12 +37,12 @@ public class EnemyController : MonoBehaviour
     private float meleeRate = 0f;
     private float rangedRate = 0f;
     private float nextAttackTime = 0f;
-    private int attackDamage;
+    private float attackDamage;
 
-    private int PlayerattackDamage; //玩家攻击力
-    private int PlayerattackDefense; //玩家防御力
+    private float PlayerattackDamage; //玩家攻击力
+    private float PlayerattackDefense; //玩家防御力
 
-    private int enemyDefend;
+    private float enemyDefend;
     private GameObject EnemyHealthUI;
     private GameObject newEnemyHealthUI;
 
@@ -300,7 +300,7 @@ public class EnemyController : MonoBehaviour
             // 攻击逻辑
             Debug.Log("敌人正在进行 ===================== 近 ================== 站攻击");
             ParameterManage.Instance.currentEnemyPosition = transform.position;
-
+            ParameterManage.Instance.currentEnemyGameObject = this.gameObject;
             // 如果攻击时间已经到达，则进行攻击
             if (Time.time >= nextAttackTime && !EnemyIsDie)
             {
@@ -324,9 +324,10 @@ public class EnemyController : MonoBehaviour
     private void MeleeAttack(GameObject player)
     {
         fsm.SetState(EnemyStateType.NearAttacking);
-       /* PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;*/
-       
+        //PlayerattackDamage = playerHealth.attack;
+        //PlayerattackDefense = playerHealth.defense;
+        PlayerattackDamage = PlayerAttributesManeger.Instance.attack;
+        PlayerattackDefense = PlayerAttributesManeger.Instance.defense;
         // 对玩家造成伤害 以及僵直和击退效果实现
 
         // 计算敌人与玩家的方向向量
@@ -337,7 +338,7 @@ public class EnemyController : MonoBehaviour
         if (!ParameterManage.Instance.IsDie)
         {
             //对自己的伤害
-            TakeDamage(PlayerattackDamage, PlayerattackDefense);
+            //TakeDamage(PlayerattackDamage, PlayerattackDefense);
             Debug.Log("玩家对敌人的伤害" + PlayerattackDamage);
            
         }
@@ -347,12 +348,15 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("开始近战攻击==============================");
     }
-    public void TakeDamage(int damage, int defense)
+
+    public void TakeDamage(float damage, float defense)
     {
         //播放敌人受击动画
         //fsm.SetState(EnemyStateType.Hit);
         // 计算经过防御的伤害
-        int damageTaken = Mathf.Max(0, damage - defense);
+
+        Debug.Log("玩家造成的伤害-----------"+damage);
+        float damageTaken = Mathf.Max(0, damage - defense);
         currentHealth -= damageTaken;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 限制血量在0和最大血量之间
         UpdateHealthUI();
@@ -362,7 +366,8 @@ public class EnemyController : MonoBehaviour
             EnemyIsDie = true;
             Debug.Log("我已经死了");
             //玩家属性增加
-            player.GetComponent<PlayerController>().UseEnemyItem(enemyStats);
+            //player.GetComponent<PlayerController>().UseEnemyItem(enemyStats);
+            PlayerAttributesManeger.Instance.UseEnemyItem(enemyStats);
         }
     }
 
@@ -373,7 +378,7 @@ public class EnemyController : MonoBehaviour
             // 攻击逻辑
             Debug.Log("敌人正在进行 ============ 远 ====== 站攻击");
             ParameterManage.Instance.currentEnemyPosition = transform.position;
-
+            ParameterManage.Instance.currentEnemyGameObject = this.gameObject;
             // 如果攻击时间已经到达，则进行攻击
             if (Time.time >= nextAttackTime && !EnemyIsDie)
             {
@@ -393,9 +398,11 @@ public class EnemyController : MonoBehaviour
     {
         fsm.SetState(EnemyStateType.FarAttacking);
 
-    /*    PlayerattackDamage = playerHealth.attack;
-        PlayerattackDefense = playerHealth.defense;*/
+        /*    PlayerattackDamage = playerHealth.attack;
+            PlayerattackDefense = playerHealth.defense;*/
 
+        PlayerattackDamage = PlayerAttributesManeger.Instance.attack;
+        PlayerattackDefense = PlayerAttributesManeger.Instance.defense;
         // 对玩家造成伤害 以及僵直和击退效果实现
         // 计算敌人与玩家的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
@@ -405,7 +412,7 @@ public class EnemyController : MonoBehaviour
         if (!ParameterManage.Instance.IsDie)
         {
             //对自己的伤害
-            TakeDamage(PlayerattackDamage, PlayerattackDefense);
+            //TakeDamage(PlayerattackDamage, PlayerattackDefense);
             Debug.Log("玩家对敌人的伤害" + PlayerattackDamage);
 
         }

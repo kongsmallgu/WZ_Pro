@@ -22,6 +22,9 @@ public class ParameterManage : MonoBehaviour
     //当前正在攻击的敌人位置
     public Vector3 currentEnemyPosition;
 
+    //当前正在攻击的敌人位置
+    public GameObject currentEnemyGameObject;
+
     //当前被选中的武器
     public GameObject currentPlayerWeapon = null;
 

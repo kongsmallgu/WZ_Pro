@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
     private float currentHealth;
 
     private float maxHealth;
-    private float attack;
-    private float defense;
+    public float attack;
+    public float defense;
     private float moveSpeed; // 角色移动速度
     private float atkSpeTime = 1f;
 
@@ -32,11 +32,18 @@ public class PlayerController : MonoBehaviour
 
     //攻击速度
     private float AtkAniSpeed;
+    private float AtkAniSpeedEnd;
+
+    private StateType CurrentState;
+
+  
+    private float lastAttackTime; // 上一次攻击的时间
+    private bool IsAttacking = false;
 
     private void Awake()
     {
         //根据配置文件设置人物属性
-        maxHealth = PlayerAttributesManeger.Instance.maxHealth;
+/*        maxHealth = PlayerAttributesManeger.Instance.maxHealth;
         attack = PlayerAttributesManeger.Instance.attack;
         defense = PlayerAttributesManeger.Instance.defense;
         moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;
@@ -55,12 +62,38 @@ public class PlayerController : MonoBehaviour
         fsm.AddState(StateType.Die, new DieState(animator));
         fsm.AddState(StateType.Dizzy, new DizzyState(animator));
         //设置状态
-        fsm.SetState(StateType.Idle);
+        fsm.SetState(StateType.Idle);*/
 
     }
 
     private void Start()
     {
+        //根据配置文件设置人物属性
+        maxHealth = PlayerAttributesManeger.Instance.maxHealth;
+        attack = PlayerAttributesManeger.Instance.attack;
+        defense = PlayerAttributesManeger.Instance.defense;
+        moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;
+        atkSpeTime = PlayerAttributesManeger.Instance.AtkspeedTime;
+
+        //实时显示血条
+        Heal(maxHealth);
+
+        AtkAniSpeed = 4f;
+       // AtkAniSpeedEnd = 1/AtkAniSpeed;
+        AtkAniSpeedEnd = 1;
+        Debug.Log(AtkAniSpeed + "==========================" + atkSpeTime);
+        //添加动画
+        fsm = new FSMControl();
+        animator = this.transform.GetChild(0).GetComponent<Animator>();
+        //添加状态
+        fsm.AddState(StateType.Idle, new IdleState(animator, this.fsm));
+        fsm.AddState(StateType.Moving, new MovingState(animator));
+        fsm.AddState(StateType.Attacking, new AttackingState(animator, AtkAniSpeedEnd));
+        fsm.AddState(StateType.Die, new DieState(animator));
+        fsm.AddState(StateType.Dizzy, new DizzyState(animator));
+        //设置状态
+        fsm.SetState(StateType.Idle);
+
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
@@ -70,15 +103,16 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         //实时获取 玩家各项属性
-       /* maxHealth = PlayerAttributesManeger.Instance.maxHealth;
+        maxHealth = PlayerAttributesManeger.Instance.maxHealth;
         attack = PlayerAttributesManeger.Instance.attack;
         defense = PlayerAttributesManeger.Instance.defense;
-        moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;*/
+        moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;
 
         Debug.Log("玩家生命值"+ currentHealth);
         Debug.Log("玩家攻击力" + attack);
         Debug.Log("玩家防御力" + defense);
         Debug.Log("玩家移动速度" + moveSpeed);
+        Debug.Log("玩家攻击速度" + atkSpeTime);
 
         Debug.Log(currentHealth);
         fsm.OnTick();
@@ -104,70 +138,55 @@ public class PlayerController : MonoBehaviour
             fsm.SetState(StateType.Idle);
         }
 
-        
-
-        // 检查是否能够攻击
+       //进入敌人攻击范围 开始攻击 
         if (IsAttack)
         {
-            Attack();
+            lastAttackTime += Time.deltaTime;
 
-        }
+            // 当计时器超过攻击间隔时间时，执行
+            // 攻击并重置计时器
+            if (lastAttackTime >= atkSpeTime)
+            {
+                Debug.Log("攻击间隔为=========================" + atkSpeTime);
+                enemyTarget = true;
+                Attack();
+
+            }
+        }      
     }
 
-    public float attackSpeed = 2f; // 攻击间隔
-    private float lastAttackTime; // 上一次攻击的时间
-    private bool IsAttacking = false;
-
+    private bool enemyTarget;
     public void Attack()
     {
-        if (Time.time >= lastAttackTime)
-        {
-            // 执行攻击逻辑
-            lastAttackTime = Time.time;
-            Vector3 attackTargetPosition = GetAttackTargetPosition();
+        
+        // 执行攻击逻辑
+        Vector3 attackTargetPosition = GetAttackTargetPosition();
+        Vector3 attackDirection = (attackTargetPosition - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(attackDirection);
+        fsm.SetState(StateType.Attacking);
+        Debug.Log("玩家开始攻击！！！！！！！！！！！！！！！！！!");
 
-            Vector3 attackDirection = (attackTargetPosition - transform.position).normalized;
-            transform.rotation = Quaternion.LookRotation(attackDirection);
 
-            fsm.SetState(StateType.Attacking);
+        EnemyAttackObj = ParameterManage.Instance.currentEnemyGameObject;
+        EnemyController enemyHealth = EnemyAttackObj.GetComponent<EnemyController>();
+        enemyHealth.TakeDamage(attack, defense); // 给敌方造成伤害
+        Debug.Log("给敌方造成伤害++++++++++++++++++++++++++++++" + attack);
 
-            Debug.Log("玩家开始攻击！！！！！！！！！！！！！！！！！!");
-            StartCoroutine(ResetAttackStatus()); // 重置攻击状态
-        }
-
-       
-        /*  // 检查是否可以攻击
-          if (Time.time - lastAttackTime >= 1f / attackSpeed)
-          {
-              // 执行攻击逻辑
-              lastAttackTime = Time.time;
-              Vector3 attackTargetPosition = GetAttackTargetPosition();
-
-              Vector3 attackDirection = (attackTargetPosition - transform.position).normalized;
-              transform.rotation = Quaternion.LookRotation(attackDirection);
-
-              fsm.SetState(StateType.Attacking);
-
-              Debug.Log("玩家开始攻击！！！！！！！！！！！！！！！！！!");
-
-          }
-          else
-          {
-              Debug.Log("Attack speed too fast!");
-          }*/
+        StartCoroutine(ResetAttackStatus()); // 重置攻击状态
     }
-
-
     private IEnumerator ResetAttackStatus()
     {
-        yield return new WaitForSeconds(1f / attackSpeed);
-        IsAttacking = false; // 重置攻击状态
+        yield return new WaitForSeconds(0.9f);
+        //fsm.SetState(StateType.Idle);
+        lastAttackTime = 0f;
+        enemyTarget = false;
     }
+
 
     //血条管理 更新
 
     //减少角色的血量
-    public void TakeDamage(int damage , int Defense, Vector3 Direction, float knockbackForce)
+    public void TakeDamage(float damage , float Defense, Vector3 Direction, float knockbackForce)
     {
         //僵直 
         //fsm.SetState(StateType.Dizzy);
@@ -175,7 +194,7 @@ public class PlayerController : MonoBehaviour
         //Knockback(Direction,knockbackForce);
 
         // 计算经过防御的伤害
-        int damageTaken = Mathf.Max(0, damage - Defense);
+        float damageTaken = Mathf.Max(0, damage - Defense);
 
         // 更新玩家的生命值
         currentHealth -= damageTaken;
@@ -215,14 +234,14 @@ public class PlayerController : MonoBehaviour
         fsm.SetState(StateType.Die);
         Debug.Log("我已经去世了");
     }
-    private Vector3 EnemyAttackObj;
+    private Vector3 EnemyAttackPos;
+    private GameObject EnemyAttackObj;
     // 获取攻击目标的位置
     private Vector3 GetAttackTargetPosition()
     {
-
-        EnemyAttackObj = ParameterManage.Instance.currentEnemyPosition;
-        Debug.Log("传入敌人的位置信息" + EnemyAttackObj);
-        return EnemyAttackObj;
+        EnemyAttackPos = ParameterManage.Instance.currentEnemyPosition;
+        Debug.Log("传入敌人的位置信息" + EnemyAttackPos);
+        return EnemyAttackPos;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -252,7 +271,9 @@ public class PlayerController : MonoBehaviour
             }
 
             //效果实现
-            UseItem(potion);
+            //UseItem(potion);
+
+            PlayerAttributesManeger.Instance.UseItem(potion);
         }
 
 
@@ -280,7 +301,9 @@ public class PlayerController : MonoBehaviour
             }
 
             //效果实现
-            UseItemSpecial(potion);
+            //UseItemSpecial(potion);
+            PlayerAttributesManeger.Instance.UseItemSpecial(potion);
+
         }
 
         if (other.gameObject.CompareTag("AttackType"))
@@ -301,6 +324,7 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
     // 使用物品时增强玩家属性
     public void UseItem(Item item)
     {
@@ -310,6 +334,7 @@ public class PlayerController : MonoBehaviour
         // 增加玩家攻击力
         attack += item.attackBonus;
         defense += item.defenseBonus;
+        atkSpeTime -= item.atkSpeed;
 
         Debug.Log("使用了物品：" + item.itemName);
         Debug.Log("增强了玩家生命值：" + item.healthBonus);

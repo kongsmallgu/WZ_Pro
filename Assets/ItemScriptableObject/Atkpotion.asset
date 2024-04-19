@@ -19,5 +19,5 @@ MonoBehaviour:
   attackBonus: 0
   defenseBonus: 0
   moveSpeed: 0
-  atkSpeed: 0
+  atkSpeed: 0.2
   itemDuration: 0

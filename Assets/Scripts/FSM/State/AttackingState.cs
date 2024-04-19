@@ -23,7 +23,7 @@ public class AttackingState : StateBase
         
         foreach (AnimationClip clip in clips)
         {
-            Debug.LogError(clip.name + "  " + clip.length);
+            //Debug.LogError(clip.name + "  " + clip.length);
 
             if (clip.name == "Attack01")
             {
@@ -49,7 +49,7 @@ public class AttackingState : StateBase
 
         // 攻击时修改动画的播放速度
         animator.speed = atkSp / attackInterval;
-       
+        //animator.speed = normalatkSp;
     }
   
     public override void OnUpdate()

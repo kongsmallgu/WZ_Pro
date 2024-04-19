@@ -34,4 +34,6 @@ public class PotionItemShow : MonoBehaviour
         itemduration = potionitem.itemDuration;
     }
 
+
+
 }
