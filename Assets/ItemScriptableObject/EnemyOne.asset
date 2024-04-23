@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyOne
   m_EditorClassIdentifier: 
   EnemyName: "\u654C\u4EBA\u4E00"
-  EnemyHealth: 100
-  EnemyAttack: 20
+  EnemyHealth: 50
+  EnemyAttack: 2
   EnemyDefense: 0
   PatrolRange: 15
   MeleeRange: 3

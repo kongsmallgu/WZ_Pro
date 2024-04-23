@@ -28,6 +28,14 @@ public class AttackingState : StateBase
             if (clip.name == "Attack01")
             {
                 atkSp = clip.length;
+                AnimationEvent attackEvent = new AnimationEvent();
+                attackEvent.functionName = "NormalAttack";
+                attackEvent.time =  0.1f; // 在攻击动画的中间位置触发事件
+                clip.AddEvent(attackEvent);
+
+               
+
+
                 //攻速时间
                 attackInterval = Atkspeed;
                 Debug.Log("攻击速度===================="+attackInterval);

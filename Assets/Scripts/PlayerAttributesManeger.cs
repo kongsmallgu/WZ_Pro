@@ -8,7 +8,6 @@ public class PlayerAttributesManeger : MonoBehaviour
 {
     public static PlayerAttributesManeger Instance;
     public PlayerStats playerstats;
-
     //基本属性
     public float maxHealth { get; private set; }
     public float attack { get; private set; }
@@ -16,7 +15,9 @@ public class PlayerAttributesManeger : MonoBehaviour
     public float moveSpeed { get; private set; }
     public float AtkspeedTime { get; private set; }
 
-    private float currentHealth;
+    public float Atkrange { get; private set; }
+
+    public float currentHealth { get; private set; }
     private void Awake()
     {
         // 确保只有一个实例存在
@@ -32,12 +33,14 @@ public class PlayerAttributesManeger : MonoBehaviour
 
         //初始化
         maxHealth = playerstats.Health;
+        currentHealth = playerstats.Health;
         attack = playerstats.Attack;
         defense = playerstats.Defense;
         moveSpeed = playerstats.MoveSpeed;
         AtkspeedTime = playerstats.AttackTime;
+        Atkrange = playerstats.AttackRange;
     }
-
+    public List<EnemyController> enemiesInRange = new List<EnemyController>(); // 在攻击范围内的敌人列表
     private void Update()
     {
         
@@ -91,6 +94,23 @@ public class PlayerAttributesManeger : MonoBehaviour
         Debug.Log("增强了玩家攻击力：" + item.AddPlayerAttack);
         Debug.Log("增强了玩家防御力：" + item.AddPlayerDefense);
     }
+
+    //减少玩家血量
+    public void DecPlayerHp(float damage, float Defense)
+    {
+        //僵直 
+        //fsm.SetState(StateType.Dizzy);
+        //击退
+        //Knockback(Direction,knockbackForce);
+
+        // 计算经过防御的伤害
+        float damageTaken = Mathf.Max(0, damage - Defense);
+
+        // 更新玩家的生命值
+        currentHealth -= damageTaken;
+
+    }
+
 
 
 }

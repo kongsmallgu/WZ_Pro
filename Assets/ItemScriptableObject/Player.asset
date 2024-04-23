@@ -16,4 +16,5 @@ MonoBehaviour:
   Attack: 20
   Defense: 10
   MoveSpeed: 5
-  AttackTime: 1
+  AttackTime: 0.2
+  AttackRange: 3

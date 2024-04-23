@@ -10,11 +10,11 @@ public class EnemyStats : ScriptableObject
     [Tooltip("敌人的名称")]
     public string EnemyName;
     [Tooltip("敌人的生命值")]
-    public int EnemyHealth;
+    public float EnemyHealth;
     [Tooltip("敌人的攻击力")]
-    public int EnemyAttack;
+    public float EnemyAttack;
     [Tooltip("敌人的防御力")]
-    public int EnemyDefense;
+    public float EnemyDefense;
 
     [Header("行为属性")]
     [Tooltip("敌人的巡逻范围")]

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public float defense;
     private float moveSpeed; // 角色移动速度
     private float atkSpeTime = 1f;
+    private float atkrange = 1f;
 
     public HealthBar healthBar;
 
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviour
   
     private float lastAttackTime; // 上一次攻击的时间
     private bool IsAttacking = false;
+
+    private List<EnemyController> enemiesInRange; 
 
     private void Awake()
     {
@@ -74,6 +77,10 @@ public class PlayerController : MonoBehaviour
         defense = PlayerAttributesManeger.Instance.defense;
         moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;
         atkSpeTime = PlayerAttributesManeger.Instance.AtkspeedTime;
+        atkrange = PlayerAttributesManeger.Instance.Atkrange;
+
+        //获取敌人数据
+        enemiesInRange = PlayerAttributesManeger.Instance.enemiesInRange;
 
         //实时显示血条
         Heal(maxHealth);
@@ -107,14 +114,19 @@ public class PlayerController : MonoBehaviour
         attack = PlayerAttributesManeger.Instance.attack;
         defense = PlayerAttributesManeger.Instance.defense;
         moveSpeed = PlayerAttributesManeger.Instance.moveSpeed;
+        atkSpeTime = PlayerAttributesManeger.Instance.AtkspeedTime;
+        atkrange = PlayerAttributesManeger.Instance.Atkrange;
+        currentHealth = PlayerAttributesManeger.Instance.currentHealth;
 
-        Debug.Log("玩家生命值"+ currentHealth);
+        Debug.Log("玩家最大生命值"+ maxHealth);
+        Debug.Log("玩家当前生命值" + currentHealth);
         Debug.Log("玩家攻击力" + attack);
         Debug.Log("玩家防御力" + defense);
         Debug.Log("玩家移动速度" + moveSpeed);
         Debug.Log("玩家攻击速度" + atkSpeTime);
+        Debug.Log("玩家攻击范围" + atkrange);
 
-        Debug.Log(currentHealth);
+        healthBar.SetHealth(currentHealth);
         fsm.OnTick();
         // 如果角色已经死亡，则停止更新状态和行为
         if (currentHealth <= 0)
@@ -132,45 +144,92 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(moveDirection);
             fsm.SetState(StateType.Moving);
             rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.deltaTime);
+            
         }
         else
         {
             fsm.SetState(StateType.Idle);
         }
+        IsAttack = false;
 
-       //进入敌人攻击范围 开始攻击 
-        if (IsAttack)
+        //进入敌人攻击范围 开始攻击 
+        /*if (IsAttack)
         {
-            lastAttackTime += Time.deltaTime;
+            
+        }  */
 
-            // 当计时器超过攻击间隔时间时，执行
-            // 攻击并重置计时器
-            if (lastAttackTime >= atkSpeTime)
+
+        lastAttackTime += Time.deltaTime;
+
+        // 当计时器超过攻击间隔时间时，执行
+        // 攻击并重置计时器
+        if (lastAttackTime >= atkSpeTime)
+        {
+            Debug.Log("攻击间隔为=========================" + atkSpeTime);
+            enemyTarget = true;
+            AttackNearestEnemy();
+
+        }
+    }
+    private bool enemyTarget;
+
+    //找到最近的敌人进行攻击
+    private void AttackNearestEnemy()
+    {
+        GameObject nearestEnemy = FindNearestEnemy();
+        if (nearestEnemy != null)
+        {
+            Attack(nearestEnemy);
+        }
+        else 
+        {
+            Debug.Log("最近没有敌人");
+        }
+    }
+    //找到最近的敌人
+    private GameObject FindNearestEnemy()
+    {
+        GameObject nearestEnemy = null;
+        float nearestDistance = Mathf.Infinity;
+        foreach (EnemyController enemy in enemiesInRange)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < nearestDistance)
             {
-                Debug.Log("攻击间隔为=========================" + atkSpeTime);
-                enemyTarget = true;
-                Attack();
-
+                nearestDistance = distance;
+                nearestEnemy = enemy.gameObject;
             }
-        }      
+        }
+        return nearestEnemy;
     }
 
-    private bool enemyTarget;
-    public void Attack()
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        //        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, atkrange);
+    }
+    private bool IsAtkDmage = false;
+    public void Attack(GameObject EnemyObj)
     {
         
         // 执行攻击逻辑
-        Vector3 attackTargetPosition = GetAttackTargetPosition();
-        Vector3 attackDirection = (attackTargetPosition - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(attackDirection);
+        //Vector3 attackTargetPosition = GetAttackTargetPosition();
+        //Vector3 attackDirection = (attackTargetPosition - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(EnemyObj.gameObject.transform.position);
         fsm.SetState(StateType.Attacking);
         Debug.Log("玩家开始攻击！！！！！！！！！！！！！！！！！!");
-
-
-        EnemyAttackObj = ParameterManage.Instance.currentEnemyGameObject;
+        if (!IsAtkDmage) 
+        {
+            EnemyObj.GetComponent<EnemyController>().TakeDamage(attack, defense);
+            IsAtkDmage = true;
+        }
+        
+        Debug.Log("给敌方造成伤害----------------------" + attack);
+       /* EnemyAttackObj = ParameterManage.Instance.currentEnemyGameObject;
         EnemyController enemyHealth = EnemyAttackObj.GetComponent<EnemyController>();
         enemyHealth.TakeDamage(attack, defense); // 给敌方造成伤害
-        Debug.Log("给敌方造成伤害++++++++++++++++++++++++++++++" + attack);
+        Debug.Log("给敌方造成伤害----------------------" + attack);*/
 
         StartCoroutine(ResetAttackStatus()); // 重置攻击状态
     }
@@ -180,6 +239,7 @@ public class PlayerController : MonoBehaviour
         //fsm.SetState(StateType.Idle);
         lastAttackTime = 0f;
         enemyTarget = false;
+        IsAtkDmage = false;
     }
 
 
@@ -236,13 +296,14 @@ public class PlayerController : MonoBehaviour
     }
     private Vector3 EnemyAttackPos;
     private GameObject EnemyAttackObj;
+
     // 获取攻击目标的位置
-    private Vector3 GetAttackTargetPosition()
+/*    private Vector3 GetAttackTargetPosition()
     {
         EnemyAttackPos = ParameterManage.Instance.currentEnemyPosition;
         Debug.Log("传入敌人的位置信息" + EnemyAttackPos);
         return EnemyAttackPos;
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {

@@ -18,5 +18,7 @@ public class PlayerStats : ScriptableObject
     public float MoveSpeed;
     [Header("Íæ¼Ò¹¥»÷¼ä¸ô Íæ¼ÒÃ¿¼¸Ãë¹¥»÷Ò»´Î")]
     public float AttackTime;
+    [Header("Íæ¼Ò¹¥»÷·¶Î§")]
+    public float AttackRange;
 
 }

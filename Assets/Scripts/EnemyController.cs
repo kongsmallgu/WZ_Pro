@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour
 
     // 玩家对象
     private GameObject player;
-    private PlayerController playerHealth;
+    //private PlayerController playerHealth;
 
     //敌人死后掉落物品
     private string EnemyName;
@@ -87,6 +87,7 @@ public class EnemyController : MonoBehaviour
     private EnemySkillManager skillManager;
     //玩家与敌人的实时距离
     private float distanceToPlayer;
+    //private List<EnemyController> enemiesInRange;
     private void Awake()
     {
         fsm = new EnemyFSMControl();
@@ -142,7 +143,8 @@ public class EnemyController : MonoBehaviour
         currentState = EnemyState.Patrol;
         LoadEnemyUIHealth();
         player = GameObject.FindGameObjectWithTag("Player");
-        playerHealth = player.GetComponent<PlayerController>();
+        //playerHealth = player.GetComponent<PlayerController>();
+        //enemiesInRange = new List<EnemyController>();
         InitializePatrolPoints();
         fsm.SetState(EnemyStateType.Idle);
 
@@ -157,6 +159,17 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        //血量为0时
+        // 如果角色已经死亡，则停止更新状态和行为
+        if (currentHealth <= 0)
+        {
+           
+            currentState = EnemyState.Dead;
+            return;
+        }
+
+        Debug.Log("敌人当前的血量===========" + currentHealth);
+
         //状态切换条件
         distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         //近站攻击
@@ -186,6 +199,8 @@ public class EnemyController : MonoBehaviour
             {
                 currentState = EnemyState.Dead;
             }
+            AddEnemy();
+
         }
         //追踪
         else if (distanceToPlayer <= patrolRadius && distanceToPlayer > rangedRange && !ParameterManage.Instance.IsDie)
@@ -199,6 +214,12 @@ public class EnemyController : MonoBehaviour
         {
             currentState = EnemyState.Patrol;
             newEnemyHealthUI.SetActive(false);
+
+            if (PlayerAttributesManeger.Instance.enemiesInRange != null) 
+            {
+                PlayerAttributesManeger.Instance.enemiesInRange.Remove(this.gameObject.GetComponent<EnemyController>());
+            }
+            
         }
 
         //状态切换
@@ -224,7 +245,7 @@ public class EnemyController : MonoBehaviour
 
     private void PatrolState()
     {
-        playerHealth.IsAttack = false;
+        //playerHealth.IsAttack = false;
         // 巡逻逻辑
         if (patrolPoints == null)
         {
@@ -280,7 +301,7 @@ public class EnemyController : MonoBehaviour
         transform.position += direction * trackSpeed * Time.deltaTime;
         Debug.Log("追踪的方法|||||||||||||||||||"+ transform.position);
 
-        playerHealth.IsAttack = false;
+        //playerHealth.IsAttack = false;
     }
 
     private bool PlayerInSight()
@@ -295,6 +316,7 @@ public class EnemyController : MonoBehaviour
     }
     private void meleeAttackState()
     {
+        //playerHealth.IsAttack = true;
         if (!ParameterManage.Instance.IsDie)
         {
             // 攻击逻辑
@@ -333,8 +355,9 @@ public class EnemyController : MonoBehaviour
         // 计算敌人与玩家的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
         //对玩家的伤害
-        playerHealth.TakeDamage(attackDamage, enemyDefend, direction, 0.5f);
-        playerHealth.IsAttack = true;
+        //playerHealth.TakeDamage(attackDamage, enemyDefend, direction, 0.5f);
+        PlayerAttributesManeger.Instance.DecPlayerHp(attackDamage, enemyDefend);
+        //playerHealth.IsAttack = true;
         if (!ParameterManage.Instance.IsDie)
         {
             //对自己的伤害
@@ -348,31 +371,47 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("开始近战攻击==============================");
     }
+    private bool hasRunFunction = false;
+    private void AddEnemy() 
+    {
+        if (!hasRunFunction) 
+        {
+            //远战加入队列
+            PlayerAttributesManeger.Instance.enemiesInRange.Add(this.gameObject.GetComponent<EnemyController>());
+            hasRunFunction = true;
+        }
+       
+        
+    }
 
     public void TakeDamage(float damage, float defense)
     {
         //播放敌人受击动画
         //fsm.SetState(EnemyStateType.Hit);
         // 计算经过防御的伤害
-
-        Debug.Log("玩家造成的伤害-----------"+damage);
         float damageTaken = Mathf.Max(0, damage - defense);
         currentHealth -= damageTaken;
+        Debug.Log("玩家对敌人造成的伤害-----------" + damageTaken);
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 限制血量在0和最大血量之间
+       
         UpdateHealthUI();
         //自己的血量为0
         if (currentHealth <= 0)
         {
+            currentState = EnemyState.Dead;
+            Die();
             EnemyIsDie = true;
             Debug.Log("我已经死了");
             //玩家属性增加
             //player.GetComponent<PlayerController>().UseEnemyItem(enemyStats);
             PlayerAttributesManeger.Instance.UseEnemyItem(enemyStats);
+
         }
     }
 
     private void rangeAttackState()
     {
+        //playerHealth.IsAttack = true;
         if (!ParameterManage.Instance.IsDie)
         {
             // 攻击逻辑
@@ -407,8 +446,8 @@ public class EnemyController : MonoBehaviour
         // 计算敌人与玩家的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
         //对玩家的伤害
-        playerHealth.TakeDamage(attackDamage-5, enemyDefend, direction, 0.5f);
-        playerHealth.IsAttack = true;
+        //playerHealth.TakeDamage(attackDamage-5, enemyDefend, direction, 0.5f);
+        PlayerAttributesManeger.Instance.DecPlayerHp(attackDamage-5f, enemyDefend);
         if (!ParameterManage.Instance.IsDie)
         {
             //对自己的伤害
@@ -465,10 +504,13 @@ public class EnemyController : MonoBehaviour
         }
     }
     void Die()
-    {  
-        playerHealth.IsAttack = false;
-        fsm.SetState(EnemyStateType.Die);
-       
+    {
+        //playerHealth.IsAttack = false;
+        //        fsm.SetState(EnemyStateType.Die);
+        if (PlayerAttributesManeger.Instance.enemiesInRange != null)
+        {
+            PlayerAttributesManeger.Instance.enemiesInRange.Remove(this.gameObject.GetComponent<EnemyController>());
+        }
         //血条预制体也消失
         Destroy(newEnemyHealthUI);
         Debug.Log("我作为一个敌人 已经死啦 不要打啦");
@@ -480,7 +522,7 @@ public class EnemyController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+//        Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.DrawWireSphere(transform.position, patrolRadius);
     }
 

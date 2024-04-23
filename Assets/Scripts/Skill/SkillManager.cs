@@ -88,13 +88,13 @@ public class SkillManager : MonoBehaviour
         if (prefab != null)
         {
             Debug.Log("技能释放============" + position);
-            Instantiate(prefab, position, rotation);
+            GameObject skillInstance = Instantiate(prefab, position, rotation);
+            //几秒后销毁
+            Destroy(skillInstance, 3f);
         }
         else
         {
             Debug.LogWarning("Prefab not found!");
         }
     }
-
-
 }

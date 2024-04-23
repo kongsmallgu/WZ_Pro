@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     public EnemyStats enemyStats;
 
     //血条
-    private int maxHealth;
-    private int currentHealth;
+    private float maxHealth;
+    private float currentHealth;
     private Text Enemyname;
     private Slider healthSlider;    
     // 攻击
@@ -21,12 +21,12 @@ public class Enemy : MonoBehaviour
     private float meleeRate = 0f;
     private float rangedRate = 0f;
     private float nextAttackTime = 0f;
-    private int attackDamage;
+    private float attackDamage;
 
-    private int PlayerattackDamage; //玩家攻击力
-    private int PlayerattackDefense; //玩家防御力
+    private float PlayerattackDamage; //玩家攻击力
+    private float PlayerattackDefense; //玩家防御力
 
-    private int enemyDefend;
+    private float enemyDefend;
     private GameObject EnemyHealthUI;
     private GameObject newEnemyHealthUI;
     //敌人是否死亡
@@ -270,12 +270,12 @@ public class Enemy : MonoBehaviour
 
         Debug.Log("开始远战攻击");
     }
-    public void TakeDamage(int damage,int defense)
+    public void TakeDamage(float damage,float defense)
     {
         //播放敌人受击动画
         //fsm.SetState(EnemyStateType.Hit);
         // 计算经过防御的伤害
-        int damageTaken = Mathf.Max(0, damage - defense);
+        float damageTaken = Mathf.Max(0, damage - defense);
         currentHealth -= damageTaken;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 限制血量在0和最大血量之间
         UpdateHealthUI();
